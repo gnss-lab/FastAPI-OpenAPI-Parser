@@ -1,14 +1,17 @@
 [tool.poetry]
-name = "openapi-parser"
+name = "openapi_parser"
 version = "0.1.0"
 description = ""
 authors = ["Kalinka George <xitowzys@gmail.com>"]
-readme = "README.md"
-packages = [{include = "openapi_parser"}]
 license = "Apache-2.0"
+keywords = ["python", "fastapi", "gateway", "api", "microservice", "microservices"]
+homepage = "https://github.com/xitowzys-ISZF/OpenAPI-Parser"
+repository = "https://github.com/xitowzys-ISZF/OpenAPI-Parser"
+readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
+requests = "^2.28.2"
 
 
 [build-system]

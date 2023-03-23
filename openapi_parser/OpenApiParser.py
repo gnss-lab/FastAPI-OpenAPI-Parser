@@ -4,7 +4,7 @@ import requests
 from typing import Any
 from requests import Response
 
-from fastapi_gateway_auto_generate.utils.APITags import APITags
+from .APITags import APITags
 
 
 class OpenApiParser:
