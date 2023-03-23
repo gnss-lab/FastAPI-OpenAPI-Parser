@@ -5,11 +5,12 @@ description = ""
 authors = ["Kalinka George <xitowzys@gmail.com>"]
 readme = "README.md"
 packages = [{include = "openapi_parser"}]
+license = "Apache-2.0"
 
 [tool.poetry.dependencies]
 python = "^3.11"
 
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>=1.0.0", "wheel>=0.36,<1.0", "poetry>=1.1,<2", "virtualenv==20.0.33"]
 build-backend = "poetry.core.masonry.api"
