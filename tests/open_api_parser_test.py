@@ -13,6 +13,8 @@ from tests.services import rinex_to_csv
 
 OPEN_API_PARSE_REQUEST_GET = "openapi_parser.OpenApiParser.requests.get"
 
+from tests.data.data import test_data
+
 
 class TestOpenApiParser:
 
@@ -75,13 +77,41 @@ class TestOpenApiParser:
             route = rinex_to_csv.app.routes[4 + paths.index(path)]
             assert parser.get_path_method(path) == route.methods.pop().lower()
 
-    @pytest.mark.parametrize("path, expected", [
-        ("/rinex_to_csv/upload_rinex", False),
-        ("/rinex_to_csv/upload_nav", True),
-        ("/rinex_to_csv/run", False),
-        ("/rinex_to_csv/get_result", True),
-    ])
+    @pytest.mark.parametrize("path, expected", test_data)
     def test_auto_generate_enabled(self, parser_rinex_to_csv_fixture, path, expected):
         parser: OpenApiParser = next(parser_rinex_to_csv_fixture(tags=True))
 
-        assert parser.auto_generate_enabled(path=path) == expected
+        assert parser.auto_generate_enabled(path=path) == expected.get("auto_generate_enabled")
+
+    @pytest.mark.parametrize("path, expected", test_data)
+    def test_large_file_enabled(self, parser_rinex_to_csv_fixture, path, expected):
+        parser: OpenApiParser = next(parser_rinex_to_csv_fixture(tags=True))
+
+        assert parser.large_file_enabled(path=path) == expected.get("large_file_enabled")
+
+    @pytest.mark.parametrize("path, expected", test_data)
+    def test_large_file_queues(self, parser_rinex_to_csv_fixture, path, expected):
+        parser: OpenApiParser = next(parser_rinex_to_csv_fixture(tags=True))
+
+        assert parser.large_file_queues(path=path) == expected.get("large_file_queues")
+
+    @pytest.mark.parametrize("path, expected", test_data)
+    def test_get_body_multipart_form_data(self, parser_rinex_to_csv_fixture, path, expected):
+        parser: OpenApiParser = next(parser_rinex_to_csv_fixture(tags=True))
+
+        assert parser.get_body_multipart_form_data(path=path, method=parser.get_path_method(path)) == expected.get(
+            "get_body_multipart_form_data")
+
+    @pytest.mark.parametrize("path, expected", test_data)
+    def test_get_body_application_json(self, parser_rinex_to_csv_fixture, path, expected):
+        parser: OpenApiParser = next(parser_rinex_to_csv_fixture(tags=True))
+
+        assert parser.get_body_application_json(path=path, method=parser.get_path_method(path)) == expected.get(
+            "get_body_application_json")
+
+    @pytest.mark.parametrize("path, expected", test_data)
+    def test_get_queries_param(self, parser_rinex_to_csv_fixture, path, expected):
+        parser: OpenApiParser = next(parser_rinex_to_csv_fixture(tags=True))
+
+        assert parser.get_queries_param(path=path, method=parser.get_path_method(path)) == expected.get(
+            "get_queries_param")
