@@ -4,8 +4,6 @@ import requests
 from typing import Any
 from requests import Response
 
-from .APITags import APITags
-
 
 class OpenApiParser:
     def __init__(self):
