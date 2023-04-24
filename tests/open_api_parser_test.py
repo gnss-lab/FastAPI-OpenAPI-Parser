@@ -39,7 +39,7 @@ class TestOpenApiParser:
                 tags_open_api = getattr(parser, '_OpenApiParser__tags_open_api')
                 assert tags_open_api != {}
 
-    def test_parse_from_service_exception(self):
+    def test_parse_from_service_request_exception(self):
         with patch(OPEN_API_PARSE_REQUEST_GET) as mock_get:
             mock_get.side_effect = requests.exceptions.RequestException
 
@@ -48,6 +48,20 @@ class TestOpenApiParser:
 
             assert status_code == -1
             assert parser.get_raw_response_in_json() == {}
+
+    def test_parse_from_service_json_decode_error(self):
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.content = b"not a valid json"
+
+        with patch("requests.get", return_value=mock_response):
+            with pytest.raises(json.JSONDecodeError) as exc:
+                json.loads(mock_response.content.decode("utf-8"), cls=json.JSONDecoder)
+
+            parser = OpenApiParser()
+            status_code = parser.parse_from_service('http://example.com')
+
+            assert status_code == -2
 
     def test_get_paths(self, parser_rinex_to_csv_fixture):
         parser: OpenApiParser = next(parser_rinex_to_csv_fixture())
@@ -78,22 +92,11 @@ class TestOpenApiParser:
             assert parser.get_path_method(path) == route.methods.pop().lower()
 
     @pytest.mark.parametrize("path, expected", test_data)
-    def test_auto_generate_enabled(self, parser_rinex_to_csv_fixture, path, expected):
+    def test_check_api_gateway_tags(self, parser_rinex_to_csv_fixture, path, expected):
         parser: OpenApiParser = next(parser_rinex_to_csv_fixture(tags=True))
 
-        assert parser.auto_generate_enabled(path=path) == expected.get("auto_generate_enabled")
-
-    @pytest.mark.parametrize("path, expected", test_data)
-    def test_large_file_enabled(self, parser_rinex_to_csv_fixture, path, expected):
-        parser: OpenApiParser = next(parser_rinex_to_csv_fixture(tags=True))
-
-        assert parser.large_file_enabled(path=path) == expected.get("large_file_enabled")
-
-    @pytest.mark.parametrize("path, expected", test_data)
-    def test_large_file_queues(self, parser_rinex_to_csv_fixture, path, expected):
-        parser: OpenApiParser = next(parser_rinex_to_csv_fixture(tags=True))
-
-        assert parser.large_file_queues(path=path) == expected.get("large_file_queues")
+        assert parser.check_api_gateway_tags(path=path, tag_key="x-large-file-queues") == expected.get(
+            "large_file_queues")
 
     @pytest.mark.parametrize("path, expected", test_data)
     def test_get_body_multipart_form_data(self, parser_rinex_to_csv_fixture, path, expected):

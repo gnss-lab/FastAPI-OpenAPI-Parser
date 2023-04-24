@@ -177,20 +177,8 @@ class OpenApiParser:
 
         return False
 
-    def auto_generate_enabled(self, path: str) -> bool:
-        return self.check_api_gateway_tags(path=path, tag_key=APITags.AUTO_GENERATE)
-
-    def auth_enabled(self, path: str) -> bool:
-        return self.check_api_gateway_tags(path=path, tag_key=APITags.ENABLE_AUTH)
-
-    def large_file_enabled(self, path: str) -> bool:
-        return self.check_api_gateway_tags(path=path, tag_key=APITags.LARGE_FILE)
-
-    def large_file_queues(self, path: str) -> list[str]:
-        return self.check_api_gateway_tags(path=path, tag_key=APITags.LARGE_FILE_QUEUES)
-
     def get_raw_response_in_json(self) -> dict[Any, Any]:
         return self.__response_json
 
-    def get_raw_resoponse_in_string(self) -> str:
-        return json.dumps(self.__response_json)
+    # def get_raw_resoponse_in_string(self) -> str:
+    #     return json.dumps(self.__response_json)
