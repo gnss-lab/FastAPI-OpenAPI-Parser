@@ -5,13 +5,13 @@ from unittest.mock import Mock, patch
 
 import requests
 
-from openapi_parser.OpenApiParser import OpenApiParser
+from fastapi_openapi_parser.OpenApiParser import OpenApiParser
 
 from tests.fixtures.openapi_json_rinex_to_csv_fixture import openapi_json_rinex_to_csv_fixture
 from tests.fixtures.parser_rinex_to_csv_fixture import parser_rinex_to_csv_fixture
 from tests.services import rinex_to_csv
 
-OPEN_API_PARSE_REQUEST_GET = "openapi_parser.OpenApiParser.requests.get"
+OPEN_API_PARSE_REQUEST_GET = "fastapi_openapi_parser.OpenApiParser.requests.get"
 
 from tests.data.data import test_data
 

@@ -2,7 +2,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from openapi_parser.OpenApiParser import OpenApiParser
+from fastapi_openapi_parser.OpenApiParser import OpenApiParser
 from .openapi_json_rinex_to_csv_fixture import openapi_json_rinex_to_csv_fixture
 
 
@@ -17,7 +17,7 @@ def parser_rinex_to_csv_fixture(openapi_json_rinex_to_csv_fixture):
         mock_response.status_code = 200
         mock_response.content = openapi.encode()
 
-        with patch('openapi_parser.OpenApiParser.requests.get', return_value=mock_response):
+        with patch('fastapi_openapi_parser.OpenApiParser.requests.get', return_value=mock_response):
             parser.parse_from_service('http://example.com')
 
             yield parser
