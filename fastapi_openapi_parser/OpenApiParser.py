@@ -122,6 +122,20 @@ class OpenApiParser:
 
         return path
 
+    def get_parameters_with_types(self, path: str, method: str) -> list[dict[str, str]]:
+        parameters: list[dict[str, str]] = []
+
+        if "parameters" in self.__response_json["paths"][path][method]:
+            for param in self.__response_json["paths"][path][method]["parameters"]:
+                param_name = param["name"]
+                param_type = param["schema"]["type"]
+                if param_type in self.__data_types:
+                    param_type = self.__data_types[param_type]
+
+                parameters.append({"name": param_name, "type": param_type})
+
+        return parameters
+
     def get_queries_param(self, path: str, method: str) -> tuple[None, None, None] | tuple[
         list[str], list[bool], list[bool]]:
 
