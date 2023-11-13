@@ -136,6 +136,18 @@ class OpenApiParser:
 
         return parameters
 
+    def get_path_default_values(self, path: str) -> dict:
+        defaults = {}
+        try:
+            parameters_list = self.__response_json["paths"][path][self.get_path_method(path)]["parameters"]
+            for param_info in parameters_list:
+                param_name = param_info.get("name")
+                if param_name and "schema" in param_info and "default" in param_info["schema"]:
+                    defaults[param_name] = param_info["schema"]["default"]
+        except KeyError as e:
+            print(f"Error: {e}")
+        return defaults
+
     def get_queries_param(self, path: str, method: str) -> tuple[None, None, None] | tuple[
         list[str], list[bool], list[bool]]:
 
