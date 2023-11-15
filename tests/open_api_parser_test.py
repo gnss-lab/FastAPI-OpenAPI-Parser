@@ -99,6 +99,13 @@ class TestOpenApiParser:
         actual = parser.get_parameters_with_types("/rinex_to_csv/test-types", "get")
         assert actual == expected
 
+    def test_get_path_default_values(self, parser_rinex_to_csv_fixture):
+        parser: OpenApiParser = next(parser_rinex_to_csv_fixture())
+
+        expected = {'boolean': False, 'integer': 123, 'number': 3.14, 'string': 'Hello'}
+        actual = parser.get_path_default_values("/rinex_to_csv/test-default-values")
+        assert actual == expected
+
     @pytest.mark.parametrize("path, expected", test_data)
     def test_check_api_gateway_tags(self, parser_rinex_to_csv_fixture, path, expected):
         parser: OpenApiParser = next(parser_rinex_to_csv_fixture(tags=True))
