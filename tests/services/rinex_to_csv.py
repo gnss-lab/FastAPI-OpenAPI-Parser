@@ -33,3 +33,13 @@ async def run_processing(params: ConversionParams,
 @app.get("/rinex_to_csv/get_result")
 async def get_result(rinex_to_csv_processing_id: str | None = Cookie(default=None)):
     pass
+
+
+@app.get("/rinex_to_csv/test-types")
+def test_bool(boolean: bool, string: str, integer: int, number: float):
+    pass
+
+
+@app.get("/rinex_to_csv/test-default-values")
+def test_bool(boolean: bool = False, string: str = "Hello", integer: int = 123, number: float = 3.14):
+    pass
